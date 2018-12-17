@@ -1,0 +1,44 @@
+@font-face
+{
+	font-family: Parchment;
+	src: url('../font/parchm.ttf');
+}
+html, body
+{
+	height: 100%;
+}
+body
+{
+	/*background-image: url('../img/Background/body.jpg');*/
+    /*min-height: 100%;*/
+	background-attachment: fixed;
+    background-position: center;
+	background-repeat:no-repeat;
+    background-size: cover;
+	/*min-height: 400px;*/
+}
+a{text-decoration: none;}
+a, button{outline: none;}
+a:link, a:visited { color: green; } a:active, a:hover { color: #DE636E; }
+a.email:link, a.email:visited { color: blue; } a.email:active, a.email:hover { color: red; }
+.bg{background-color: rgb(60,60,60);}
+.title
+{	
+	font-family: Parchment;
+	font-size: 68pt;
+	line-height: 1;
+	text-shadow: 0px 1px 7px white;
+}
+p.doJustify:not(.introduction){text-indent:5%;text-align:justify;}
+p.subheading{padding-bottom:16px;}
+p.introduction:first-letter
+{
+	float: left;
+	font-family: Times, serif;
+	font-size : 44pt;
+	line-height: 35px;
+	padding: 3px 3px 0 3px;
+}
+.w3-margin-small{margin:4px!important}
+.w3-padding-medium{padding:12px 20px!important}
+*[id^="placeholder-"] li{cursor: pointer;}
