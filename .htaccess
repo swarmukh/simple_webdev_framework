@@ -1,0 +1,62 @@
+# Deny access to .htaccess itself
+#<Files .htaccess>
+#	Order allow, deny
+#	Deny from all
+#</Files>
+
+DirectoryIndex index.php
+
+# Disable directory browsing
+Options -Indexes
+
+# Hide the contents of directories
+IndexIgnore *
+
+# Hide files of certain types
+IndexIgnore *.jpg *jpeg *.png *.css *.js *.php *.json
+
+RewriteEngine on
+
+	# Prevent Hotlinking of resources
+	RewriteCond %{HTTP_REFERER} !https?://(.+(\.)?)?template/ [NC]
+	RewriteCond %{HTTP_REFERER} !^$
+	RewriteRule .*\.(css|js|json|jpe?g|png|gif|eot|svg|ttf|woff)$ - [F]
+	
+	# Prevent Direct Access to resources
+	RewriteCond %{REQUEST_FILENAME} Resources/.*\.* [NC]
+	RewriteCond %{HTTP_REFERER} ^$
+	RewriteRule .*\.*$ - [R=404]
+	
+	#RewriteRule ^/?error/(\d{3})$ err.php?e=$1
+	
+	RewriteRule ^/?img/([A-Za-z0-9_/]+)([A-Za-z0-9_]+)\.(jpe?g|png|gif)$ Resources/Images/$1$2.$3
+	
+	RewriteRule ^/?js/lib/([A-Za-z0-9_]+)\.js$ Resources/Scripts/Frontend/Library/$1.js
+	RewriteRule ^/?js/([A-Za-z0-9_]+)\.js$ Resources/Scripts/Frontend/$1.js
+	
+	RewriteRule ^/?ajax/([A-Za-z0-9_]+)/(.*)$ Resources/Scripts/Backend/$1.php?$2
+	
+	RewriteRule ^/?style/lib/([A-Za-z0-9_]+)\.css$ Resources/Styles/Library/$1.css
+	RewriteRule ^/?style/([A-Za-z0-9_]+)\.css$ Resources/Styles/$1.css
+	
+	RewriteRule ^/?font/([A-Za-z0-9_]+)\.(eot|svg|ttf|woff)$ Resources/Styles/Fonts/$1.$2
+
+# Password protect files of certain types
+#<FilesMatch "\.(jpg|css|js|php)$">
+#	Authtype Basic
+#	AuthName "MyPassword"
+#	AuthUserFile <path/to>.htpasswd
+#	Require valid-user
+#</FilesMatch>
+
+#ErrorDocument 404 http://localhost/template/error/404
+
+ErrorDocument 400 "<!DOCTYPE HTML><html><head><meta charset=\"utf-8\"><title>Oops!</title></head><body style=\"background-color: lightblue\"><div><h1 style=\"color: red; text-align: center;\">Bad Request!</h1></div></body></html>
+ErrorDocument 401 "<!DOCTYPE HTML><html><head><meta charset=\"utf-8\"><title>Oops!</title></head><body style=\"background-color: lightblue\"><div><h1 style=\"color: red; text-align: center;\">Unauthorized!</h1></div></body></html>
+ErrorDocument 403 "<!DOCTYPE HTML><html><head><meta charset=\"utf-8\"><title>Oops!</title></head><body style=\"background-color: lightblue\"><div><h1 style=\"color: red; text-align: center;\">Forbidden!</h1></div></body></html>
+ErrorDocument 404 "<!DOCTYPE HTML><html><head><meta charset=\"utf-8\"><title>Oops!</title></head><body style=\"background-color: lightblue\"><div><h1 style=\"color: red; text-align: center;\">Not Found!</h1></div></body></html>
+ErrorDocument 408 "<!DOCTYPE HTML><html><head><meta charset=\"utf-8\"><title>Oops!</title></head><body style=\"background-color: lightblue\"><div><h1 style=\"color: red; text-align: center;\">Request Timeout!</h1></div></body></html>
+ErrorDocument 500 "<!DOCTYPE HTML><html><head><meta charset=\"utf-8\"><title>Oops!</title></head><body style=\"background-color: lightblue\"><div><h1 style=\"color: red; text-align: center;\">Internal Server Error!</h1></div></body></html>
+ErrorDocument 502 "<!DOCTYPE HTML><html><head><meta charset=\"utf-8\"><title>Oops!</title></head><body style=\"background-color: lightblue\"><div><h1 style=\"color: red; text-align: center;\">Bad Gateway!</h1></div></body></html>
+ErrorDocument 503 "<!DOCTYPE HTML><html><head><meta charset=\"utf-8\"><title>Oops!</title></head><body style=\"background-color: lightblue\"><div><h1 style=\"color: red; text-align: center;\">Service Unavailable!</h1></div></body></html>
+ErrorDocument 504 "<!DOCTYPE HTML><html><head><meta charset=\"utf-8\"><title>Oops!</title></head><body style=\"background-color: lightblue\"><div><h1 style=\"color: red; text-align: center;\">Gateway Timeout!</h1></div></body></html>
